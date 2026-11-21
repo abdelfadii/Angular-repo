@@ -1,0 +1,45 @@
+<h1>Ma liste de tâches</h1>
+
+<!-- Formulaire d'ajout : en dehors du @if pour pouvoir ajouter une tâche même si la liste est vide -->
+<div>
+    <input
+        type="text"
+        [value]="newTask()"
+        (input)="newTask.set($any($event.target).value)"
+        (keyup.enter)="addTask()"
+        placeholder="Nouvelle tâche..."
+    />
+    <button (click)="addTask()">Ajouter</button>
+</div>
+
+@if (tasks().length === 0) {
+    <p>Aucune tâche disponible</p>
+} @else {
+
+    <h3>Tâches terminées : {{ completedCount() }}</h3>
+
+    <h3>Tâches restantes : {{ remainingCount() }}</h3>
+
+    <hr>
+
+    <ul>
+        @for (task of tasks(); track task.id) {
+            <li>
+                <h3>{{ task.title }}</h3>
+
+                <p>
+                    Statut :
+                    {{ task.completed ? 'Terminée' : 'En cours' }}
+                </p>
+
+                <button (click)="markCompleted(task.id)">
+                    Changer le statut
+                </button>
+            </li>
+        }
+    </ul>
+
+    <button (click)="resetTasks()">
+        Réinitialiser
+    </button>
+}
